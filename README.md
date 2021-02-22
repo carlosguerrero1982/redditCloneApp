@@ -1,4 +1,4 @@
-# Awesome Project Build with TypeORM
+# Awesome Project Build with TypeORM, NODEJS, TAILWIND CSS, EXPRESS,MORGAN,BCRYPT,TYPESCRIPT,JWT.
 
 Steps to run this project:
 
