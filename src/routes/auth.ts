@@ -1,9 +1,11 @@
 import { Request, Response, Router } from "express";
 import { User } from "../entities/User";
-import {validate,isEmpty} from 'class-validator'
+import { validate, isEmpty, Length } from 'class-validator';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import cookie from 'cookie';
+import auth from '../middleware/auth';
+
 
 
 const register= async(req:Request,res:Response)=>{
@@ -87,35 +89,40 @@ const login= async(req:Request,res:Response)=>{
     }
 }
 
-const me= async(req:Request,res:Response)=>{
+const me= (req:Request,res:Response)=>{
+
+  return res.json(res.locals.user)
+
+}
+
+const logout =(req:Request,res:Response)=>{
 
     try {
-        const token = req.cookies.token
-
-        if(!token) throw new Error('invalid token')
-
-        const {username}:any = jwt.verify(token,process.env.JWT_SECRET)
-
-        const user = await User.findOne({username})
-
-        if(!user) throw new Error('not user')
-
-        return res.json(user)
-
+        
+        res.set('Set-Cookie',cookie.serialize('token','',{
+            httpOnly:true,
+            secure:process.env.NODE_ENV==='production',
+            sameSite:'strict',
+            expires: new Date(0),
+            path:'/'
+        }));
+        return res.status(500).json({
+            message:'Borrado'
+        })
     } catch (error) {
         console.log(error);
         return res.status(401).json({
            message:'Error'
-        }) 
+        })          
     }
 }
-
 
 
 const router = Router();
 
 router.post('/register',register);
 router.post('/login',login);
-router.get('/me',me);
+router.get('/me',auth,me);
+router.get('/logout',auth,logout);
 
 export default router;
