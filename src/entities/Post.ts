@@ -3,6 +3,7 @@ import Entity from './Entity';
 import { Column, Entity as TOEntity, Index, JoinColumn, ManyToOne, BeforeInsert } from 'typeorm';
 import User from './User';
 import makeid, { slugify } from '../util/helpers';
+import Sub from './Sub';
 
 @TOEntity('posts')
 export default class Post extends Entity {
@@ -31,10 +32,14 @@ export default class Post extends Entity {
     @Column()
     subName:string
 
-    @ManyToOne(() => User, user => user.posts)
+    @ManyToOne(() => User, (user) => user.posts)
     @JoinColumn({name:'username',referencedColumnName:'username'})
     user: User;
 
+    @ManyToOne(() => Sub, (sub) => sub.posts)
+    @JoinColumn({name:'subName',referencedColumnName:'name'})
+    sub: Sub;
+    
     @BeforeInsert()
     makeIdSlug(){
         this.identifier=makeid(7)

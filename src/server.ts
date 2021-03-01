@@ -4,12 +4,14 @@ import express from 'express';
 import morgan from 'morgan';
 import router from './routes/auth';
 import routerpost from './routes/post';
+import routersub from './routes/subs';
 import trim from './middleware/trim'
 import cookie from 'cookie';
 import cookieParser from 'cookie-parser'
 import dotenv from 'dotenv'
 import auth from "./middleware/auth";
-;
+
+
 
 dotenv.config()
 
@@ -29,6 +31,9 @@ app.get('/',(req,res)=>{
 
 app.use('/api/auth',router);
 app.use('/api/post',routerpost);
+app.use('/api/subs',routersub);
+
+
 
 app.listen(process.env.PORT,async()=>{
     console.log('server running on port 5000');
