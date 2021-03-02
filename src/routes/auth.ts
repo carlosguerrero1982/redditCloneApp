@@ -1,6 +1,6 @@
 import { Request, Response, Router } from "express";
 import  User  from "../entities/User";
-import { validate, isEmpty, Length } from 'class-validator';
+import { validate, isEmpty } from 'class-validator';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import cookie from 'cookie';
@@ -89,13 +89,13 @@ const login= async(req:Request,res:Response)=>{
     }
 }
 
-const me= (req:Request,res:Response)=>{
+const me= (_:Request,res:Response)=>{
 
   return res.json(res.locals.user)
 
 }
 
-const logout =(req:Request,res:Response)=>{
+const logout =(_:Request,res:Response)=>{
 
     try {
         

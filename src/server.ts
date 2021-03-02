@@ -6,10 +6,8 @@ import router from './routes/auth';
 import routerpost from './routes/post';
 import routersub from './routes/subs';
 import trim from './middleware/trim'
-import cookie from 'cookie';
 import cookieParser from 'cookie-parser'
 import dotenv from 'dotenv'
-import auth from "./middleware/auth";
 
 
 
@@ -23,7 +21,7 @@ app.use(trim)
 app.use(cookieParser())
 
 
-app.get('/',(req,res)=>{
+app.get('/',(_,res)=>{
 
   return res.send('WELCOME');
     
