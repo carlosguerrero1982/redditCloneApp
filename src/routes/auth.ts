@@ -11,6 +11,7 @@ import auth from '../middleware/auth';
 const register= async(req:Request,res:Response)=>{
 
     const{email,username,password}=req.body;
+
     try{
     
 
@@ -23,15 +24,30 @@ const register= async(req:Request,res:Response)=>{
             
         if(Object.keys(errors).length>0){
             
+
             return res.status(400).json(errors)
-            
+
         }
+            
         const user = new User({email,username,password});
 
         errors = await validate(user);
         
-        if(errors.length>0)return res.status(400).json({errors})
+        if(errors.length>0){
+
+            let mappedErrors={}
+            errors.forEach(element => {
+                const key=element.property
+                const value=Object.values(element.constraints)
+                mappedErrors[key]=value
+            });
+           return res.status(400).json(mappedErrors)
+
+        }
+
         
+    
+
         await user.save();
 
         return res.json(user);
@@ -60,6 +76,7 @@ const login= async(req:Request,res:Response)=>{
 
             return res.status(400).json(errors);
         }
+
 
         const user = await User.findOne({username});
         if(!user) return res.status(404).json({error:'user not found'})
