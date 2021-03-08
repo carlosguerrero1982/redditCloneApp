@@ -29,7 +29,7 @@ app.get('/',(_,res)=>{
 })
 
 app.use('/api/auth',router);
-app.use('/api/post',routerpost);
+app.use('/api/posts',routerpost);
 app.use('/api/subs',routersub);
 
 
